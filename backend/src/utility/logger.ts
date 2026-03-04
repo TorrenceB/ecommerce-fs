@@ -15,10 +15,10 @@ const createLogDirectory = async () => {
     }
 }
 
-const createLogFile = async (directory: string, content: string) => {
+const createLogFile = async (directory: string, content: string, level: string = "log") => {
     try {
         const filePath = path.join(directory, 'logs.txt')
-        const data = `\n[App Log]:${new Date().toISOString()} - ${content}`
+        const data = `\n[App ${level.toUpperCase()}]:${new Date().toISOString()} - ${content}`
 
         await fs.promises.appendFile(filePath, data)
     } catch (error) {
@@ -28,6 +28,14 @@ const createLogFile = async (directory: string, content: string) => {
 
 /* Custom logger middleware */
 const createLog = (req: Request, res: Response, next: NextFunction) => {
+    res.on("error", async (error) => {
+        const directory = await createLogDirectory()
+
+        if (directory) {
+            await createLogFile(directory, `${req.method} ${error.message}`, "error")
+        }
+    })
+
     res.on("finish", async () => {
         const directory = await createLogDirectory()
 

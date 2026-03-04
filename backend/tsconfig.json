@@ -8,7 +8,8 @@
       "#/*": ["*"],
       "#routes": ["routes/index.ts"],
       "#database": ["database/index.ts"],
-      "#utility": ["utility/index.ts"]
+      "#utility": ["utility/index.ts"],
+      "#data-access/*": ["data-access/*.ts"]
     },
     "outDir": "dist",
 

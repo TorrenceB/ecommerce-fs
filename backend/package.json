@@ -7,7 +7,9 @@
   "imports": {
     "#routes": "./src/routes/index.ts",
     "#database": "./src/database/index.ts",
-    "#utility": "./src/utility/index.ts"
+    "#utility": "./src/utility/index.ts",
+    "#auth": "./src/auth/index.ts",
+    "#data-access/*": "./src/data-access/*.ts"
   },
   "scripts": {
     "build": "npx tsc",
@@ -21,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "@supabase/supabase-js": "^2.98.0",
+    "body-parser": "^2.2.2",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
@@ -33,7 +36,7 @@
     "@types/node": "^25.3.2",
     "@types/pg": "^8.16.0",
     "nodemon": "^3.1.14",
-    "ts-node": "^10.9.2",    
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
 }
