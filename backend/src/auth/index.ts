@@ -1,6 +1,7 @@
 import type { SignIn, SignUp, Auth } from "#/types/Auth";
 
 import { AppError } from "#utility";
+
 import supabase from "#database";
 
 const signUp = async (credentials: SignUp) => {

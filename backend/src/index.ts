@@ -7,10 +7,10 @@ import { logger } from "#utility"
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(logger);
 app.use(bodyParser.json())
 app.use(cors());
 app.use('/', routes)
+app.use(logger);
 
 app.listen(port, () => {
   console.log(`Server is running at port ${port}`);

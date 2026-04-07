@@ -3,11 +3,12 @@ import { AppError } from '#utility'
 
 import auth from '#auth'
 import products from '#data-access/products'
+import authenticateToken from "#middleware/authenticate-token";
 
 const router = Router()
 
 // Home
-router.get('/', (req, res) => {
+router.get('/', authenticateToken, (req, res) => {
     res.send("Home Page")
 })
 
@@ -17,11 +18,18 @@ router.post('/login', async (req, res) => {
 
     try {
         const data = await auth.signIn({ email, password })
+        const body = {
+            status: "success",
+            message: "User successfully logged in.",
+            token: data.session?.access_token,
+            user: data.user
+        }
 
-        res.status(200).json({ status: "success", message: "User logged in successfully", user: data.user })
+        res.status(200).json(body)
     } catch (error: any) {
-        res.status(400).send({ status: "error", message: `An error occurred while trying to log user in: ${error.message}` })
+        return res.status(400).json({ status: "error", message: `An error occurred while trying to log user in: ${error.message}` })
     }
+
 })
 
 router.post('/signup', async (req, res) => {
