@@ -2,11 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import type { JwtPayload } from "jsonwebtoken";
 
 import jwt from "jsonwebtoken"
-import jwksClient from 'jwks-rsa'
-
-const client = jwksClient({
-    jwksUri: process.env.SUPABASE_JWKS_URI ?? "",
-})
+import client from "#plugins/jwks"
 
 const authenticateToken = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization
@@ -18,13 +14,14 @@ const authenticateToken = async (req: Request, res: Response, next: NextFunction
     try {
         const signingKey = await client.getSigningKey(process.env.SUPABASE_JWT_KID)
         const publicKey = signingKey.getPublicKey()
-        const payload = await jwt.verify(token, publicKey) as JwtPayload
+        const payload = await jwt.verify(token, publicKey)
 
-        req.user = payload;
+        req.user = payload as JwtPayload;
 
         next()
     } catch (error) {
-        return res.status(403).json({ status: 'error', message: `Invalid or Expired token. ${error}` })
+        next(error)
+        // return res.status(403).json({ status: 'error', message: `Invalid or Expired token. ${error}` })
     }
 }
 
