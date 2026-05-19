@@ -3,6 +3,7 @@ import { Router } from 'express'
 import auth from '#auth'
 import authenticateToken from "#middleware/authenticate-token";
 import refreshAccessToken from "#middleware/refresh-access-token";
+import createCheckoutSession from '#middleware/create-checkout-session';
 
 const router = Router()
 
@@ -47,8 +48,7 @@ router.post('/auth/login', async (req, res, next) => {
 
         res.status(200).json(body)
     } catch (error: any) {
-        next(error)
-        // return res.status(400).json({ status: "error", message: `An error occurred while trying to log user in: ${error.message}` })
+        next(`An error occurred while trying to log user in: ${error.message}`)
     }
 
 })
@@ -61,11 +61,13 @@ router.post('/auth/signup', async (req, res, next) => {
 
         res.status(200).json({ status: "success", message: "User created successfully", user: data.user })
     } catch (error: any) {
-        next(error)
-        // res.status(400).send({ status: "error", message: `An error occurred while trying to sign user up: ${error.message}` })
+        next(`An error occurred while trying to sign user up: ${error.message}`)
     }
 })
 
 router.post('/auth/refresh', refreshAccessToken)
+
+// stripe
+router.post('/create-checkout-session', createCheckoutSession)
 
 export default router;
