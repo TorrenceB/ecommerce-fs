@@ -70,4 +70,9 @@ router.post('/auth/refresh', refreshAccessToken)
 // stripe
 router.post('/create-checkout-session', createCheckoutSession)
 
+// test connection
+router.get("/test", (req, res) => {
+    res.status(200).json({ status: "Connection to API is OK" })
+})
+
 export default router;

@@ -5,8 +5,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
 
-EXPOSE 8080
+EXPOSE 5173
+
+ENV WATCHPACK_POLLING=true
 
 CMD ["npm", "run", "dev"]
