@@ -16,7 +16,9 @@ export const login = async ({ email, password }: LoginCredentials) => {
         })
 
         if (!response.ok) {
-            throw new Error(`Login failed with response code ${response.status}`)
+            console.error(response)
+
+            throw new Error(`Login failed`)
         }
 
         const data = await response.json()

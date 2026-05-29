@@ -47,8 +47,10 @@ router.post('/auth/login', async (req, res, next) => {
         }
 
         res.status(200).json(body)
-    } catch (error: any) {
-        next(`An error occurred while trying to log user in: ${error.message}`)
+    } catch (error) {
+        console.error(error)
+
+        next(`An error occurred while trying to log user in: ${error}`)
     }
 
 })
