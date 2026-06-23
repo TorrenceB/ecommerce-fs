@@ -20,7 +20,7 @@ const authenticateToken = async (req: Request, res: Response, next: NextFunction
 
         next()
     } catch (error) {
-        next(`Invalid or Expired token. ${error}`)
+        next(error)
     }
 }
 

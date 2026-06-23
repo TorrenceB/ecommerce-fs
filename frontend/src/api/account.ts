@@ -1,18 +1,15 @@
-import type { LoginCredentials } from "../types"
-
-export const login = async ({ email, password }: LoginCredentials) => {
+export const getAccount = async (userId: string, token: string) => {
     try {
-        const body = {
-            email,
-            password
+        if (!token) {
+            throw new Error("Token required")
         }
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
-            method: "POST",
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/account/:${userId}`, {
+            method: "GET",
             headers: {
+                "Authorization": token,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(body)
         })
 
         if (!response.ok) {

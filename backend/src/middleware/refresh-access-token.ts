@@ -12,7 +12,7 @@ const refreshAccessToken = async (req: Request, res: Response, next: NextFunctio
     const { data, error } = await supabase.auth.refreshSession({ refresh_token })
 
     if (error) {
-        return res.status(403).json({ status: 'error', message: `Invalid or Expired refresh token. ${error}` })
+        next(error)
     }
 
     return res.status(200).json({ accessToken: data.session?.access_token });

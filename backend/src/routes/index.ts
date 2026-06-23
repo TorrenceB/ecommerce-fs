@@ -16,7 +16,11 @@ router.get('/', authenticateToken, (req, res) => {
 router.get('/account/:id', authenticateToken, (req, res) => {
     const { id } = req.params
 
-    res.send(`Account Page for user ${id}`)
+    res.status(200).json({
+        id,
+        firstName: "Torrence",
+        lastName: "Brown"
+    })
 })
 
 // Auth
@@ -43,14 +47,15 @@ router.post('/auth/login', async (req, res, next) => {
             status: "success",
             message: "User successfully logged in.",
             token: data.session?.access_token,
-            user: data.user
+            user: {
+                id: data.user?.id,
+                email: data.user?.email
+            }
         }
 
         res.status(200).json(body)
     } catch (error) {
-        console.error(error)
-
-        next(`An error occurred while trying to log user in: ${error}`)
+        next(error)
     }
 
 })
@@ -63,7 +68,7 @@ router.post('/auth/signup', async (req, res, next) => {
 
         res.status(200).json({ status: "success", message: "User created successfully", user: data.user })
     } catch (error: any) {
-        next(`An error occurred while trying to sign user up: ${error.message}`)
+        next(error)
     }
 })
 

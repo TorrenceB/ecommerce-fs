@@ -1,6 +1,11 @@
+import { useAuth } from "../contexts/AuthContext"
+import type { Auth } from "../types"
+
 const Home = () => {
+    const { user } = useAuth() as Auth
+
     return (
-        <div>Home</div>
+        <div>User logged in: {user?.id}</div>
     )
 }
 
