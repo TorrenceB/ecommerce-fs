@@ -82,9 +82,11 @@ Finalized through two ERD review rounds. The ERD (Excalidraw) is the source of t
 
 **Keys & types:**
 
-- Public entities (product, origin, order): UUID PKs, v7 preferred.
-- Internal vocabularies (process, roast_level, variety, tasting_note):
-  `smallint GENERATED ALWAYS AS IDENTITY`.
+- Public entities (product, order): UUID PKs, v7 preferred.
+- Curated reference tables (origin, process, roast_level, variety, tasting_note):
+  `smallint GENERATED ALWAYS AS IDENTITY`. Origin moved here from UUID: a small,
+  curated list never addressed by id in a public URL (Torrence's call; ERD updated).
+  Never hardcode identity ids in seeds; look rows up by their natural attributes.
 - `country` PK is the natural key `iso_2` (ISO 3166-1 alpha-2) so child FKs are
   readable (`origin.country_id = 'CR'`). Decided by Torrence.
 - `timestamptz` always; `text` over `varchar(n)`; identity over serial
@@ -125,6 +127,8 @@ Neither package has a test runner yet.
 **Database** (`cd backend`; Supabase CLI is a devDependency, so use `npx supabase`; Postgres 17):
 
 - Local stack: `npx supabase start`. Full rebuild (migrations + seeds): `npx supabase db reset`.
+- Seed files: `backend/supabase/seeds/NN_<table>.sql`, loaded in lexical order via
+  the `./seeds/*.sql` glob, so number them in FK-dependency order.
 - Migrations are **hand-written** (no declarative schemas / `db diff`; a deliberate
   learning choice) and live in `backend/supabase/migrations/`. Seed files are configured
   via `[db.seed] sql_paths` in `backend/supabase/config.toml`.
